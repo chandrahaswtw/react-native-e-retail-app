@@ -6,5 +6,6 @@ export const colors = {
     flipCartBlue : "#2874F0",
     pumpkin : "#d35400",
     greyBg : "#dfe6e9",
-    success : "#27ae60"
+    success : "#27ae60",
+    yellow : "#f1c40f"
 }

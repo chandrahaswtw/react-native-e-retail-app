@@ -1,15 +1,14 @@
 // BASIC IMPORTS
 import React from 'react';
 
-
 // IMPORTING THE NAVIGATOR STUFF
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { createDrawerNavigator } from 'react-navigation-drawer';
 
 // IMPORTING THE SCREENS
-import FormValidationScreen from '../screens/FormValidationScreen';
+import EmployeeDatabase from './../screens/EmployeeDataBaseScreen';
+import AddEdit from '../screens/AddEditScreen';
+
 
 // OTHER IMPORTS
 import { colors } from './../assets/colors';
@@ -27,15 +26,18 @@ const stackDefaultOptions = {
     }
 }
 
-// PRODUCT STACK
 const FormStack = createStackNavigator({
-    Products: {
-        screen: FormValidationScreen,
+    EMPLOYEE_DATABASE: {
+        screen: EmployeeDatabase,
         navigationOptions: {
-            headerTitle: "FORM VALIDATION"
+            headerTitle : "EMPLOYEE DATABASE"
         }
+    },
+    ADD_EDIT_SCREEN: {
+        screen: AddEdit
     }
 }, {
+    initialRouteName : "EMPLOYEE_DATABASE",
     defaultNavigationOptions: stackDefaultOptions
 })
 
