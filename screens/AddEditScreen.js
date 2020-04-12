@@ -3,7 +3,11 @@ import AddEdit from './../components/AddEdit/AddEdit';
 
 const FormValidationScreen = props => {
     return (
-        <AddEdit navigation={props.navigation}></AddEdit>
+        <AddEdit
+            navigation={props.navigation}
+            id={props.navigation.getParam("id")}
+            mode={props.navigation.getParam("dynamicName")}
+        ></AddEdit>
     )
 }
 

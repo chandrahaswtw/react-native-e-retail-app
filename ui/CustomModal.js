@@ -1,5 +1,6 @@
 import React from 'react';
-import { Modal, View, Text, StyleSheet, Button, TouchableWithoutFeedback } from 'react-native';
+import { Modal, View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import Underline from './../ui/Underline'
 import { colors } from './../assets/colors';
 
 const CustomModal = props => {
@@ -8,25 +9,18 @@ const CustomModal = props => {
             <View style={styles.wrapper}>
                 <View style={styles.dialog}>
                     <Text style={styles.mainText}> {props.children} </Text>
-                    <View
-                        style={{
-                            borderBottomColor: '#ccc',
-                            borderBottomWidth: 1.5,
-                            marginVertical: 10,
-                            marginTop : 15
-                        }}
-                    />
+                    <Underline></Underline>
                     <View style={styles.buttonWrapper}>
-                        <TouchableWithoutFeedback onPress={props.okHandler}>
-                            <View style={{ padding: 5 }}>
+                        <TouchableOpacity onPress={props.okHandler}>
+                            <View style={{ padding: 8}}>
                                 <Text style={styles.buttonOkText}>OK</Text>
                             </View>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={props.cancelHandler}>
-                            <View style={{ padding: 5 }}>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={props.cancelHandler}>
+                            <View style={{ padding: 8}}>
                                 <Text style={styles.buttonCancelText}>CANCEL</Text>
                             </View>
-                        </TouchableWithoutFeedback>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -44,7 +38,7 @@ const styles = StyleSheet.create({
     dialog: {
         backgroundColor: "white",
         padding: 10,
-        paddingTop: 15,
+        paddingTop: 20,
         borderRadius: 5
     },
     buttonWrapper: {

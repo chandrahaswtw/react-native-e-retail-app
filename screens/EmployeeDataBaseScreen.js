@@ -1,19 +1,17 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, Button } from 'react-native';
+import React from 'react';
+import {StyleSheet} from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import CustomHeaderButton from '../ui/CustomHeaderButton';
-import CustomModal from './../ui/CustomModal';
+import EmployeeDatabase from './../components/EmployeeDatabase/EmployeeDatabase';
 
-const EmployeeDatabase = props => {
-    const [modalOpen, setModalOpen] = useState(false);
+
+const EmployeeDatabaseScreen = props => {
     return (
-        <View>
-           
-        </View>
+        <EmployeeDatabase navigation = {props.navigation}></EmployeeDatabase>
     )
 }
 
-EmployeeDatabase.navigationOptions = (navInfo) => {
+EmployeeDatabaseScreen.navigationOptions = (navInfo) => {
     return {
         headerRight: () => {
             return (
@@ -40,4 +38,4 @@ EmployeeDatabase.navigationOptions = (navInfo) => {
 
 const styles = StyleSheet.create({})
 
-export default EmployeeDatabase;
+export default EmployeeDatabaseScreen;

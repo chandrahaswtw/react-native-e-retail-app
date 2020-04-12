@@ -1,10 +1,12 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import FormInput from '../../ui/FormInput';
 import { colors } from '../../assets/colors';
 import CustomButton from '../../ui/CustomButton';
 import FetchAPI from '../../Fetch/FetchAPI';
 import * as keyValue from './Utils/KeyValue';
+import { useSelector } from 'react-redux';
+import CustomLoader from './../../ui/CustomLoader';
 
 
 const reducer = (state, action) => {
@@ -25,14 +27,25 @@ const reducer = (state, action) => {
                 isValid: validationClone
             }
             break;
-
+        case "EDIT_OP":
+            let isValidTemp = {
+                [keyValue.FIRST_NAME]: true,
+                [keyValue.LAST_NAME]: true,
+                [keyValue.AGE]: true,
+                [keyValue.CITY]: true,
+                [keyValue.COUNTRY]: true,
+            };
+            return {
+                values: action.val.value,
+                isValid: isValidTemp
+            }
         default:
             return state
     }
 }
 
 const AddEdit = props => {
-    const [isLoading, setLoading] = useState(false)
+    const [isLoading, setLoading] = useState(false);
     const [state, dispatch] = useReducer(reducer,
         {
             values: {
@@ -50,6 +63,8 @@ const AddEdit = props => {
                 [keyValue.COUNTRY]: false,
             }
         })
+
+    const employeeInfo = useSelector(state => state.bio.employeeInfo);
 
     const onChangeHandler = (id, val) => {
         dispatch({ key: keyValue.CHANGE_VAL, val, id });
@@ -73,67 +88,81 @@ const AddEdit = props => {
 
         setLoading(true);
 
-        FetchAPI("https://react-form-validation.firebaseio.com/.json", "POST", state.values)
-            .then((res) => { return res.json() })
-            .then((body) => { setLoading(false); props.navigation.goBack() })
-            .catch((e) => { setLoading(false) })
+        if (props.mode === "ADD") {
+            FetchAPI("https://react-form-validation.firebaseio.com/.json", "POST", state.values)
+                .then((res) => { return res.json() })
+                .then((body) => { setLoading(false); props.navigation.goBack() })
+                .catch((e) => { setLoading(false) })
+        }
+        else {
+            FetchAPI(`https://react-form-validation.firebaseio.com/${props.id}/.json`, "PUT", state.values)
+                .then((res) => { return res.json() })
+                .then((body) => { setLoading(false); props.navigation.goBack() })
+                .catch((e) => { setLoading(false) })
+        }
     }
 
+    useEffect(() => {
+        if (props.mode === "EDIT") {
+            const filteredArray = employeeInfo.find(el => el.id === props.id)
+            dispatch({ key: "EDIT_OP", val: filteredArray })
+        }
+    }, [])
+
     return (
-        <ScrollView style={styles.wrapper}>
-            <FormInput
-                title="FIRST NAME"
-                id={keyValue.FIRST_NAME}
-                value={state.values[keyValue.FIRST_NAME]}
-                isValid={state.isValid[keyValue.FIRST_NAME]}
-                onChangeHandler={onChangeHandler}
-                errorText="Enter first name">
-            </FormInput>
+        <React.Fragment>
+            <CustomLoader show={isLoading}></CustomLoader>
+            <ScrollView style={styles.wrapper}>
+                <FormInput
+                    title="FIRST NAME"
+                    id={keyValue.FIRST_NAME}
+                    value={state.values[keyValue.FIRST_NAME]}
+                    isValid={state.isValid[keyValue.FIRST_NAME]}
+                    onChangeHandler={onChangeHandler}
+                    errorText="Enter first name">
+                </FormInput>
 
-            <FormInput
-                title="LAST NAME"
-                id={keyValue.LAST_NAME}
-                value={state.values[keyValue.LAST_NAME]}
-                isValid={state.isValid[keyValue.LAST_NAME]}
-                onChangeHandler={onChangeHandler}
-                errorText="Enter last name">
-            </FormInput>
+                <FormInput
+                    title="LAST NAME"
+                    id={keyValue.LAST_NAME}
+                    value={state.values[keyValue.LAST_NAME]}
+                    isValid={state.isValid[keyValue.LAST_NAME]}
+                    onChangeHandler={onChangeHandler}
+                    errorText="Enter last name">
+                </FormInput>
 
-            <FormInput
-                title="AGE"
-                id={keyValue.AGE}
-                keyboardType="numeric"
-                value={state.values[keyValue.AGE]}
-                isValid={state.isValid[keyValue.AGE]}
-                onChangeHandler={onChangeHandler}
-                errorText="Enter your age">
-            </FormInput>
+                <FormInput
+                    title="AGE"
+                    id={keyValue.AGE}
+                    keyboardType="numeric"
+                    value={state.values[keyValue.AGE]}
+                    isValid={state.isValid[keyValue.AGE]}
+                    onChangeHandler={onChangeHandler}
+                    errorText="Enter your age">
+                </FormInput>
 
-            <FormInput
-                title="CITY"
-                id={keyValue.CITY}
-                value={state.values[keyValue.CITY]}
-                isValid={state.isValid[keyValue.CITY]}
-                onChangeHandler={onChangeHandler}
-                errorText="Enter city name where you live">
-            </FormInput>
+                <FormInput
+                    title="CITY"
+                    id={keyValue.CITY}
+                    value={state.values[keyValue.CITY]}
+                    isValid={state.isValid[keyValue.CITY]}
+                    onChangeHandler={onChangeHandler}
+                    errorText="Enter city name where you live">
+                </FormInput>
 
-            <FormInput
-                title="COUNTRY"
-                id={keyValue.COUNTRY}
-                value={state.values[keyValue.COUNTRY]}
-                isValid={state.isValid[keyValue.COUNTRY]}
-                onChangeHandler={onChangeHandler}
-                errorText="Enter the country">
-            </FormInput>
+                <FormInput
+                    title="COUNTRY"
+                    id={keyValue.COUNTRY}
+                    value={state.values[keyValue.COUNTRY]}
+                    isValid={state.isValid[keyValue.COUNTRY]}
+                    onChangeHandler={onChangeHandler}
+                    errorText="Enter the country">
+                </FormInput>
 
-            <CustomButton title={isLoading ? "SUBMITTING" : "SUBMIT"} onPressHandler={onPressHandler}></CustomButton>
+                <CustomButton title={isLoading ? "SUBMITTING" : "SUBMIT"} onPressHandler={onPressHandler}></CustomButton>
 
-            {isLoading ? <View style={styles.activityWrapper}>
-                <ActivityIndicator size="large" color="#0000ff"></ActivityIndicator>
-            </View> : null}
-
-        </ScrollView>
+            </ScrollView>
+        </React.Fragment>
     )
 }
 
