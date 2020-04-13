@@ -62,7 +62,8 @@ const EmployeeDatabase = props => {
     }
 
 
-    // INITIALING THE EVENT TO RUN THUNK
+    // INITIALIZING THE EVENT TO RUN THUNK
+
     useEffect(() => {
         var event = props.navigation.addListener("didFocus", () => {
             reduxDispatch(fetchBio(true))
@@ -73,9 +74,15 @@ const EmployeeDatabase = props => {
         }
     }, [])
 
+    useEffect(()=>{
+        reduxDispatch(fetchBio(true))
+    },[])
+
     // IF NO DATA, DISPLAY NO DATA MESSAGE
     if (!bio.employeeInfo.length) {
-        return (<View style={{ flex: 1, justifyContent: "center" }}>
+        return (
+        <View style={{ flex: 1, justifyContent: "center" }}>
+            <CustomLoader show={isLoading}></CustomLoader>
             <Text style={{ textAlign: "center", fontFamily: "open-sans-semiBold", color: colors.nasturcianFlower }}>NO RECORDS TO DISPLAY</Text>
             <Text style={{ textAlign: "center", fontFamily: "open-sans-semiBold" }}>PLEASE ADD A NEW RECORD TO VIEW THE DATA</Text>
         </View>)

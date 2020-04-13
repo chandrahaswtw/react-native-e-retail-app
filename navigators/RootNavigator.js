@@ -2,12 +2,13 @@
 import React from 'react';
 
 // IMPORTING THE NAVIGATOR STUFF
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 // IMPORTING THE SCREENS
 import EmployeeDatabase from './../screens/EmployeeDataBaseScreen';
 import AddEdit from '../screens/AddEditScreen';
+import AuthScreen from './../screens/AuthScreen';
 
 
 // OTHER IMPORTS
@@ -41,4 +42,9 @@ const FormStack = createStackNavigator({
     defaultNavigationOptions: stackDefaultOptions
 })
 
-export default createAppContainer(FormStack)
+const AuthNavigator = createSwitchNavigator({
+    Auth : AuthScreen,
+    secureContent : FormStack
+})
+
+export default createAppContainer(AuthNavigator)

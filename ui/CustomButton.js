@@ -5,7 +5,7 @@ import { colors } from './../assets/colors';
 const CustomButton = props => {
     return (
         <TouchableWithoutFeedback onPress={props.onPressHandler}>
-            <View style={styles.wrapper}>
+            <View style={{...styles.wrapper, backgroundColor : props.color}}>
                 <Text style={styles.wrapperTextStyles}>{props.title}</Text>
             </View>
         </TouchableWithoutFeedback>
@@ -14,7 +14,6 @@ const CustomButton = props => {
 
 const styles = StyleSheet.create({
     wrapper: {
-        backgroundColor: colors.success,
         padding: 6,
         borderRadius: 2,
         alignItems: "center"

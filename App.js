@@ -6,6 +6,7 @@ import { AppLoading } from 'expo';
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import BioReducer from './store/BioReducer';
+import AuthReducer from './store/AuthReducer';
 import { Provider } from 'react-redux';
 
 import thunk from 'redux-thunk';
@@ -15,7 +16,8 @@ import * as Font from 'expo-font';
 enableScreens();
 
 const rootReducer = combineReducers({
-  bio: BioReducer
+  bio: BioReducer,
+  auth : AuthReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(thunk))

@@ -5,10 +5,12 @@ import { colors } from "./../assets/colors"
 const FormInput = props => {
     return (
         <View style={styles.wrapper}>
-            <Text style={styles.textStyles}>{props.title}</Text>
-            <TextInput style={styles.inputStyles} {...props} onChangeText={props.onChangeHandler.bind(this, props.id)}></TextInput>
-            <View style={{flexDirection : "row"}}>
-                {props.isValid ? null : <Text style={styles.errorInputStyles} >{props.errorText}</Text>}
+            {props.title ? <Text style={styles.textStyles}>{props.title}</Text> : null}
+            <View style={{position : "relative"}}>
+                <TextInput style={styles.inputStyles} {...props} onChangeText={props.onChangeHandler.bind(this, props.id)}></TextInput>
+                <View style={{ flexDirection: "row", position : "absolute", right : 0, bottom : 5 }}>
+                    {props.isValid ? null : <Text style={styles.errorInputStyles} >{props.errorText}</Text>}
+                </View>
             </View>
         </View>
     )
@@ -33,9 +35,8 @@ const styles = StyleSheet.create({
         fontSize: 9,
         backgroundColor: colors.greyBg,
         borderRadius: 3,
-        padding : 1,
-        paddingHorizontal : 3,
-        marginTop : 3
+        padding: 1,
+        paddingHorizontal: 3,
     }
 })
 
