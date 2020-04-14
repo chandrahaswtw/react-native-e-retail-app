@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, AsyncStorage } from 'react-native';
 import Input from './../ui/FormInput';
 import Underline from './../ui/Underline';
 import CustomButton from './../ui/CustomButton';
@@ -7,7 +7,7 @@ import CustomModal from './../ui/CustomModal';
 import CustomLoader from './../ui/CustomLoader';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors } from './../assets/colors';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const AuthScreen = props => {
 
@@ -28,6 +28,21 @@ const AuthScreen = props => {
     const reduxDispatch = useDispatch();
     const AuthState = useSelector(state => state.auth);
 
+
+    const localStorageSetup = async (localID, tokenID, expiresAt) => {
+        try {
+            await AsyncStorage.setItem("localID", localID)
+            await AsyncStorage.setItem("tokenID", tokenID)
+            await AsyncStorage.setItem("expiresAt", String(expiresAt))
+        }
+        catch (err) {
+            setModalState({
+                show: true,
+                message: err.message
+            })
+        }
+    }
+
     const onChangeHandler = useCallback((id, val) => {
         if (id === "USERNAME") {
             setUserName(val);
@@ -41,7 +56,8 @@ const AuthScreen = props => {
                 [id]: val.trim().length ? true : false
             }
         })
-    },[setUserName, setPassword, setValidity])
+    }, [setUserName, setPassword, setValidity])
+
 
     const SignUpHandler = useCallback(async () => {
         setLoading(true);
@@ -89,10 +105,11 @@ const AuthScreen = props => {
                 message: err.message
             })
         }
-    },[setLoading, setModalState, setValidity, setUserName, setPassword, userName, password])
+    }, [setLoading, setModalState, setValidity, setUserName, setPassword, userName, password])
 
 
     const SignInHandler = useCallback(() => {
+       
         return async dispatch => {
             try {
                 setLoading(true);
@@ -114,7 +131,9 @@ const AuthScreen = props => {
 
                 if (response.ok) {
                     setLoading(false);
-                    dispatch({type : "LOGIN", value : y});
+                    let expiresAt = new Date(new Date().getTime() + Number("3600")*1000)
+                    dispatch({ type: "LOGIN", value: y , expiresAt});
+                    localStorageSetup(y.localId, y.idToken, expiresAt)
                     props.navigation.navigate("secureContent");
                 }
                 else {
@@ -133,7 +152,7 @@ const AuthScreen = props => {
                 })
             }
         }
-    },[setLoading, userName, password, setModalState])
+    }, [setLoading, userName, password, setModalState])
 
 
     const onPressHandler = useCallback(() => {
@@ -151,9 +170,9 @@ const AuthScreen = props => {
         }
 
         else {
-           reduxDispatch(SignInHandler())
+            reduxDispatch(SignInHandler())
         }
-    },[SignUpHandler, SignInHandler, setModalState])
+    }, [SignUpHandler, SignInHandler, setModalState])
 
     return (
         <React.Fragment>

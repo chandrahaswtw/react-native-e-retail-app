@@ -4,7 +4,6 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import CustomHeaderButton from '../ui/CustomHeaderButton';
 import EmployeeDatabase from './../components/EmployeeDatabase/EmployeeDatabase';
 
-
 const EmployeeDatabaseScreen = props => {
     return (
         <EmployeeDatabase navigation = {props.navigation}></EmployeeDatabase>

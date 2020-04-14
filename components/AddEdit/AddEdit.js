@@ -65,6 +65,8 @@ const AddEdit = props => {
         })
 
     const employeeInfo = useSelector(state => state.bio.employeeInfo);
+    var localID = useSelector(state => state.auth.localID);
+    var tokenID = useSelector(state => state.auth.tokenID);
 
     const onChangeHandler = (id, val) => {
         dispatch({ key: keyValue.CHANGE_VAL, val, id });
@@ -89,13 +91,13 @@ const AddEdit = props => {
         setLoading(true);
 
         if (props.mode === "ADD") {
-            FetchAPI("https://react-form-validation.firebaseio.com/.json", "POST", state.values)
+            FetchAPI(`https://react-form-validation.firebaseio.com/${localID}/.json?auth=${tokenID}`, "POST", state.values)
                 .then((res) => { return res.json() })
                 .then((body) => { setLoading(false); props.navigation.goBack() })
                 .catch((e) => { setLoading(false) })
         }
         else {
-            FetchAPI(`https://react-form-validation.firebaseio.com/${props.id}/.json`, "PUT", state.values)
+            FetchAPI(`https://react-form-validation.firebaseio.com/${localID}/${props.id}/.json?auth=${tokenID}`, "PUT", state.values)
                 .then((res) => { return res.json() })
                 .then((body) => { setLoading(false); props.navigation.goBack() })
                 .catch((e) => { setLoading(false) })
@@ -158,9 +160,7 @@ const AddEdit = props => {
                     onChangeHandler={onChangeHandler}
                     errorText="Enter the country">
                 </FormInput>
-
-                <CustomButton title={isLoading ? "SUBMITTING" : "SUBMIT"} onPressHandler={onPressHandler}></CustomButton>
-
+                <CustomButton color={colors.success} title={isLoading ? "SUBMITTING" : "SUBMIT"} onPressHandler={onPressHandler}></CustomButton>
             </ScrollView>
         </React.Fragment>
     )

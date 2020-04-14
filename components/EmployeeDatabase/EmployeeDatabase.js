@@ -18,6 +18,8 @@ const EmployeeDatabase = props => {
 
     // TAKING REDUX SLICE
     var bio = useSelector(state => state.bio);
+    var localID = useSelector(state => state.auth.localID);
+    var tokenID = useSelector(state => state.auth.tokenID);
 
     // INITIALING THE REDUX DISPATCH
     var reduxDispatch = useDispatch();
@@ -29,9 +31,10 @@ const EmployeeDatabase = props => {
 
     // THUNK OPERATION TO LOAD THE INITIAL DATA
     const fetchBio = (extraLoader) => {
-        return dispatch => {
+        return (dispatch,getState) => {
             extraLoader ? setLoading(true) : null
-            fetch("https://react-form-validation.firebaseio.com/.json", {
+            let token = getState().auth.tokenID;
+            fetch(`https://react-form-validation.firebaseio.com/${localID}/.json?auth=${token}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
@@ -53,7 +56,7 @@ const EmployeeDatabase = props => {
     const okHandler = () => {
         setModalShow(false);
         setLoading(true)
-        fetch(`https://react-form-validation.firebaseio.com/${currentID}/.json`, {
+        fetch(`https://react-form-validation.firebaseio.com/${localID}/${currentID}/.json?auth=${tokenID}`, {
             method: "DELETE"
         })
             .then((res) => {
@@ -75,6 +78,7 @@ const EmployeeDatabase = props => {
     }, [])
 
     useEffect(()=>{
+        console.log("EMP")
         reduxDispatch(fetchBio(true))
     },[])
 

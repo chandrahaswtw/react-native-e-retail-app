@@ -9,6 +9,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import EmployeeDatabase from './../screens/EmployeeDataBaseScreen';
 import AddEdit from '../screens/AddEditScreen';
 import AuthScreen from './../screens/AuthScreen';
+import EntryScreen from './../screens/EntryScreen';
 
 
 // OTHER IMPORTS
@@ -43,6 +44,7 @@ const FormStack = createStackNavigator({
 })
 
 const AuthNavigator = createSwitchNavigator({
+    Entry : EntryScreen,
     Auth : AuthScreen,
     secureContent : FormStack
 })
