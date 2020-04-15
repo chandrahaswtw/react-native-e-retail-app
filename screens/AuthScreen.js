@@ -130,7 +130,7 @@ const AuthScreen = props => {
                 var y = await response.json();
 
                 if (response.ok) {
-                    setLoading(false);
+                    setLoading(true);
                     let expiresAt = new Date(new Date().getTime() + Number("3600")*1000)
                     dispatch({ type: "LOGIN", value: y , expiresAt});
                     localStorageSetup(y.localId, y.idToken, expiresAt)
@@ -176,7 +176,7 @@ const AuthScreen = props => {
 
     return (
         <React.Fragment>
-            {/* <CustomLoader show={loading}></CustomLoader> */}
+            <CustomLoader show={loading}></CustomLoader>
             <CustomModal show={modalState.show} okHandler={() => { setModalState({ show: false, message: "" }) }} cancelHandler={() => { setModalState({ show: false, message: "" }) }}>{modalState.message}</CustomModal>
             <LinearGradient style={styles.coreWrapper} colors={[colors.picoVoid, 'transparent']}>
                 <Text style={styles.titleText}>WELCOME TO EMPLOYEE DATABASE</Text>

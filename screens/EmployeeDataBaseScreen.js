@@ -5,6 +5,7 @@ import CustomHeaderButton from '../ui/CustomHeaderButton';
 import EmployeeDatabase from './../components/EmployeeDatabase/EmployeeDatabase';
 
 const EmployeeDatabaseScreen = props => {
+    console.log(props.navigation.getParam("test"))
     return (
         <EmployeeDatabase navigation = {props.navigation}></EmployeeDatabase>
     )
@@ -26,6 +27,21 @@ EmployeeDatabaseScreen.navigationOptions = (navInfo) => {
                                         params: { dynamicName: "ADD" }
                                     }
                                 )
+                            }
+                        }>
+                    </Item>
+                </HeaderButtons>
+            )
+        },
+        headerLeft: () => {
+            return (
+                <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+                    <Item
+                        title="ADD"
+                        iconName="ios-menu"
+                        onPress={
+                            () => {
+                                navInfo.navigation.toggleDrawer()
                             }
                         }>
                     </Item>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { TouchableWithoutFeedback, Text, View, StyleSheet } from 'react-native';
-import { colors } from './../assets/colors';
 
 const CustomButton = props => {
     return (

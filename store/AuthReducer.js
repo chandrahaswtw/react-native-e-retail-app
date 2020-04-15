@@ -18,6 +18,8 @@ const AuthReducer = (state = initialState, action) => {
                 tokenID: action.tokenID,
                 expiresAt: action.expiresAt
             }
+        case "LOGOUT":
+            return initialState
         default:
             return state
     }
