@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Dimensions, AsyncStorage } from 'react-native';
 import Input from './../ui/FormInput';
 import Underline from './../ui/Underline';
@@ -107,6 +107,15 @@ const AuthScreen = props => {
         }
     }, [setLoading, setModalState, setValidity, setUserName, setPassword, userName, password])
 
+    const AutoLogOut = (exp) => {
+        return dispatch => {
+         let x = setTimeout(() => {
+                 dispatch({type : "LOGOUT"})
+                 AsyncStorage.clear()
+                 clearTimeout(x)
+            }, exp);
+        }
+    }
 
     const SignInHandler = useCallback(() => {
        
@@ -131,10 +140,10 @@ const AuthScreen = props => {
 
                 if (response.ok) {
                     setLoading(true);
-                    let expiresAt = new Date(new Date().getTime() + Number("3600")*1000)
+                    let expiresAt = new Date(new Date().getTime() + Number(y.expiresIn)*1000)
                     dispatch({ type: "LOGIN", value: y , expiresAt});
-                    localStorageSetup(y.localId, y.idToken, expiresAt)
-                    props.navigation.navigate("secureContent");
+                    localStorageSetup(y.localId, y.idToken, expiresAt);
+                    // dispatch(AutoLogOut(Number(y.expiresIn)*1000));
                 }
                 else {
                     setLoading(false);

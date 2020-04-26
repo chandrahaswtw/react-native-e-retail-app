@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import RootNavigator from './navigators/RootNavigator';
+import HomeScreen from './screens/HomeScreen';
 import { enableScreens } from 'react-native-screens';
 import { AppLoading } from 'expo';
 
@@ -17,7 +17,7 @@ enableScreens();
 
 const rootReducer = combineReducers({
   bio: BioReducer,
-  auth : AuthReducer
+  auth: AuthReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
@@ -36,15 +36,15 @@ export default function App() {
 
   const [dataLoading, setDataLoading] = useState(true);
 
+
   if (dataLoading) {
     return <AppLoading startAsync={fetchFonts} onFinish={() => { setDataLoading(false) }}></AppLoading>
   }
 
   return (
-    <SafeAreaView style={{flex : 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Provider store={store}>
-        <RootNavigator>
-        </RootNavigator>
+        <HomeScreen></HomeScreen>
       </Provider>
     </SafeAreaView>
   );

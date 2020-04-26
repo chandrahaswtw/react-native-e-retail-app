@@ -5,15 +5,15 @@ const FormValidationScreen = props => {
     return (
         <AddEdit
             navigation={props.navigation}
-            id={props.navigation.getParam("id")}
-            mode={props.navigation.getParam("dynamicName")}
+            id={props.route.params.id ? props.route.params.id : null}
+            mode={props.route.params.dynamicName}
         ></AddEdit>
     )
 }
 
 FormValidationScreen.navigationOptions = navInfo => {
     return {
-        headerTitle: navInfo.navigation.getParam("dynamicName")
+        headerTitle: props.route.params.dynamicName
     }
 }
 

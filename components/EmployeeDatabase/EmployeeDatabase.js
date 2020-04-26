@@ -68,19 +68,13 @@ const EmployeeDatabase = props => {
     // INITIALIZING THE EVENT TO RUN THUNK
 
     useEffect(() => {
-        var event = props.navigation.addListener("didFocus", () => {
+        var event = props.navigation.addListener("focus", () => {
             reduxDispatch(fetchBio(true))
         })
 
-        return () => {
-            event.remove()
-        }
+        return event;
     }, [])
 
-    useEffect(()=>{
-        console.log("EMP")
-        reduxDispatch(fetchBio(true))
-    },[])
 
     // IF NO DATA, DISPLAY NO DATA MESSAGE
     if (!bio.employeeInfo.length) {
@@ -126,7 +120,7 @@ const EmployeeDatabase = props => {
                             </View>
                             <Underline></Underline>
                             <View style={styles.buttonWrapper}>
-                                <TouchableOpacity onPress={() => { props.navigation.navigate({ routeName: "ADD_EDIT_SCREEN", params: { dynamicName: "EDIT", id: dataItem.item.id } }) }}>
+                                <TouchableOpacity onPress={() => { props.navigation.navigate("ADD_EDIT_SCREEN", { dynamicName: "EDIT", id: dataItem.item.id }) }}>
                                     <View style={styles.button}>
                                         <Entypo name="edit" size={23} color={colors.picoVoid}></Entypo>
                                     </View>

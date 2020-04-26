@@ -14,10 +14,9 @@ const EntryScreen = props => {
 
             if (new Date(expiresAt) > new Date()) {
                 dispatch({ type: "AUTOLOGIN", expiresAt, localID, tokenID })
-                props.navigation.navigate("secureContent");
             }
             else {
-                props.navigation.navigate("Auth")
+                dispatch({ type: "TRYAUTOLOGIN"})
             }
         }
 
